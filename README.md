@@ -8,7 +8,7 @@
 $ docker-compose up -d
 ```
 
-### Docker-compose file builds installs npm and builds project, installs and builds Postgress database
+Docker-compose file installs npm and builds the project, installs and builds Postgress database. Project would be available on the <a href="http://localhost:3000">http://localhost:3000</a>
 
 ## Database info
 
