@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn, TableUnique, Unique } from "typeorm";
+import { Token } from "src/tokens/entities/token.entity";
+import { Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, TableUnique, Unique } from "typeorm";
 
 @Entity()
 export class User {
@@ -34,4 +35,7 @@ export class User {
         default: false,
     })
     isTeacher: boolean;
+
+    @OneToMany(() => Token, token => token.user)
+    token: Token[]
 }

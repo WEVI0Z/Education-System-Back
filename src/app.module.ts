@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 import { SharedModule } from './shared/shared.module';
+import { TokensModule } from './tokens/tokens.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { SharedModule } from './shared/shared.module';
       synchronize: true,
       namingStrategy: new SnakeNamingStrategy(),
     }),
+    TokensModule,
     UsersModule,
     SharedModule,
   ],

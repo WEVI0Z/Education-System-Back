@@ -6,14 +6,15 @@ import { User } from './entities/user.entity';
 import { SharedModule } from "src/shared/shared.module";
 import { UniqueEmailValidator } from "./validators/uniqueEmail.validator";
 import { UniqueLoginValidator } from "./validators/uniqueLogin.validator";
+import { TokensModule } from "src/tokens/tokens.module";
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
-    SharedModule
+    SharedModule,
+    TokensModule
   ],
   providers: [UsersService, UniqueEmailValidator, UniqueLoginValidator],
   controllers: [UsersController],
-  exports: [UsersService]
 })
 export class UsersModule {}
