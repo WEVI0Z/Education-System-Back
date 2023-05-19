@@ -4,6 +4,7 @@ import { Token } from "./entities/token.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { randomBytes } from "crypto";
+import { GetTokenDto } from "./dtos/get-token.dto";
 
 @Injectable()
 export class TokensService {
@@ -22,13 +23,28 @@ export class TokensService {
         return randomBytes(32).toString("hex");
     }
 
-    async create(user: User): Promise<Token> {
+    async create(user: User): Promise<GetTokenDto> {
         const token = this.repository.create({
             name: this.generateToken(),
             expiresAt: this.generateExpiringDate(),
             user
         });
 
-        return this.repository.save(token);
+        const repositoryToken = this.repository.save(token);
+
+        return {
+            name: (await repositoryToken).name,
+            expiresAt: (await repositoryToken).expiresAt,
+            user: (await repositoryToken).user,
+        }
+    }
+
+    async getToken(tokenName: string): Promise<GetTokenDto> {
+        const token = this.repository.findOne({
+            relations: ["user"],
+            where: {name: tokenName}
+        });
+        
+        return token;
     }
 }
