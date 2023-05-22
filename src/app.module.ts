@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 import { SharedModule } from './shared/shared.module';
 import { TokensModule } from './tokens/tokens.module';
+import { DocumentsModule } from './documents/documents.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { TokensModule } from './tokens/tokens.module';
     TokensModule,
     UsersModule,
     SharedModule,
+    DocumentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -5,6 +5,7 @@ import { CreateUserDto } from "./dtos/create-user.dto";
 import { LoginUserDto } from "./dtos/login-user.dto";
 import { GetTokenDto } from "src/tokens/dtos/get-token.dto";
 import { AuthorizationGuard } from "src/shared/guards/authorization.guard";
+import { GetSafeTokenDto } from "src/tokens/dtos/get-safe-token.dto";
 
 @Controller('users')
 export class UsersController {
@@ -24,12 +25,12 @@ export class UsersController {
     }
 
     @Post()
-    create(@Body() createUserDto: CreateUserDto): Promise<GetUserDto> {
+    create(@Body() createUserDto: CreateUserDto): Promise<GetSafeTokenDto> {
         return this.service.create(createUserDto);
     }
 
     @Post("/login")
-    login(@Body() loginUserDto: LoginUserDto): Promise<GetTokenDto> {
+    login(@Body() loginUserDto: LoginUserDto): Promise<GetSafeTokenDto> {
         return this.service.login(loginUserDto);
     }
 }

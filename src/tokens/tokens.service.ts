@@ -5,6 +5,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { randomBytes } from "crypto";
 import { GetTokenDto } from "./dtos/get-token.dto";
+import { GetSafeTokenDto } from "./dtos/get-safe-token.dto";
 
 @Injectable()
 export class TokensService {
@@ -16,7 +17,7 @@ export class TokensService {
     generateExpiringDate(): Date {
         let date: Date = new Date();
 
-        return new Date(date.setMinutes(date.getMinutes() + 1)); 
+        return new Date(date.setMinutes(date.getMinutes() + 20)); 
     }
 
     generateToken(): string {
@@ -46,5 +47,13 @@ export class TokensService {
         });
         
         return token;
+    }
+
+    async getSafeToken(tokenName: string): Promise<GetSafeTokenDto> {
+        const token = this.repository.findOne({
+            where: {name: tokenName}
+        });
+        
+        return token;        
     }
 }

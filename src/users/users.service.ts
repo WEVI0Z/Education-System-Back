@@ -9,6 +9,7 @@ import { LoginUserDto } from "./dtos/login-user.dto";
 import { Token } from "src/tokens/entities/token.entity";
 import { GetTokenDto } from "src/tokens/dtos/get-token.dto";
 import { GetUserDto } from "./dtos/get-user.dto";
+import { GetSafeTokenDto } from "src/tokens/dtos/get-safe-token.dto";
 
 @Injectable()
 export class UsersService {
@@ -26,8 +27,8 @@ export class UsersService {
         return this.repository.find();
     }
 
-    async create(createUserDto: CreateUserDto): Promise<User> {
-        const user = this.repository.create({
+    async create(createUserDto: CreateUserDto): Promise<GetSafeTokenDto> {
+        const user: User = this.repository.create({
             password: await this.generateHashFromText(createUserDto.password),
             login: createUserDto.login,
             email: createUserDto.email,
@@ -37,10 +38,19 @@ export class UsersService {
             isTeacher: createUserDto.isTeacher ?? false
         });
 
-        return this.repository.save(user);
+        const repoUser = await this.repository.save(user);
+
+        const token: GetTokenDto = await this.tokensService.create(repoUser);
+
+        const getSafeTokenDto: GetSafeTokenDto = {
+            name: token.name,
+            expiresAt: token.expiresAt
+        } 
+
+        return getSafeTokenDto;
     }
 
-    async login(loginUserDto: LoginUserDto): Promise<GetTokenDto> {
+    async login(loginUserDto: LoginUserDto): Promise<GetSafeTokenDto> {
         const user: User = await this.repository.findOneBy({
             login: loginUserDto.login
         });
@@ -49,7 +59,12 @@ export class UsersService {
             throw new NotFoundException("Incorrect login or password");
         }
 
-        return this.tokensService.create(user);
+        const token: GetTokenDto = await this.tokensService.create(user);
+
+        return {
+            name: token.name,
+            expiresAt: token.expiresAt
+        }
     }
 
     async getByToken(tokenName: string): Promise<GetUserDto> {
