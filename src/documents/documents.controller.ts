@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { CreateDocumentDto } from "./dtos/create-document.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
@@ -28,5 +28,10 @@ export class DocumentsController {
         @UploadedFile() file: Express.Multer.File
     ): Promise<Document> {
         return this.service.create(createDocumentDto, file.path);
+    }
+
+    @Get("/")
+    get(@Query() query): Promise<Document[]> {
+        return this.service.get(query.category);
     }
 }

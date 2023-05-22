@@ -23,4 +23,12 @@ export class DocumentsService {
 
         return repoDoc;
     }
+
+    async get(category?: string) {
+
+        if(category) {
+            return this.repository.findBy({category})
+        }
+        return this.repository.find();
+    }
 }
