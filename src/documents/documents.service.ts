@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { FindOptions, Repository } from "typeorm";
 import { Document } from "./entities/document.entity";
 import { CreateDocumentDto } from "./dtos/create-document.dto";
 
@@ -16,7 +16,7 @@ export class DocumentsService {
             title: createDocumentDto.title,
             category: createDocumentDto.category,
             createdAt: createDocumentDto.createdAt,
-            file: filePath,
+            file: filePath.split("/")[1],
         })
 
         const repoDoc: Document = await this.repository.save(doc);
@@ -24,11 +24,16 @@ export class DocumentsService {
         return repoDoc;
     }
 
-    async get(category?: string) {
-
-        if(category) {
-            return this.repository.findBy({category})
-        }
-        return this.repository.find();
+    async get(category?: string, take: number = 0, offset: number = 0) {
+        return this.repository.find({
+            where: {
+                category
+            },
+            take: take,
+            skip: offset,
+            order: {
+                createdAt: "desc",
+            }
+        })
     }
 }

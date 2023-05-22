@@ -1,10 +1,12 @@
-import { Body, Controller, Get, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Res, StreamableFile, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { CreateDocumentDto } from "./dtos/create-document.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
-import { extname } from "path";
+import path, { extname, join } from "path";
 import { DocumentsService } from "./documents.service";
 import { Document } from "./entities/document.entity";
+import * as fs from 'fs';
+import { Response } from "express";
 
 @Controller('documents')
 export class DocumentsController {
@@ -32,6 +34,12 @@ export class DocumentsController {
 
     @Get("/")
     get(@Query() query): Promise<Document[]> {
-        return this.service.get(query.category);
+        return this.service.get(query.category, query.take, query.offset);
+    }
+    
+    @Get(":filename")
+    getFile(@Param("filename") filename: string): StreamableFile {
+      const file = fs.createReadStream(join(process.cwd(), 'uploads/' + filename));
+      return new StreamableFile(file)
     }
 }
