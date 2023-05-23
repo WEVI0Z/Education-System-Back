@@ -38,7 +38,7 @@ export class StatsService {
             take: take,
             skip: offset,
             order: {
-                createdAt: "desc",
+                id: "desc",
             }
         })
     }
