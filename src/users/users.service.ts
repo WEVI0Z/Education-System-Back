@@ -72,4 +72,14 @@ export class UsersService {
         
         return token.user;
     }
+
+    async getOne(id: number): Promise<User> {
+        const user = await this.repository.findOneBy({id});
+
+        if(!user) {
+            throw new NotFoundException("User not found");
+        }
+
+        return user;
+    }
 }

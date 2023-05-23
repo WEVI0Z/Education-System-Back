@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptions, Repository } from "typeorm";
 import { Document } from "./entities/document.entity";
@@ -25,7 +25,7 @@ export class DocumentsService {
     }
 
     async get(category?: string, take: number = 0, offset: number = 0) {
-        return this.repository.find({
+        return await this.repository.find({
             where: {
                 category
             },
@@ -35,5 +35,15 @@ export class DocumentsService {
                 createdAt: "desc",
             }
         })
+    }
+
+    async getOne(id: number): Promise<Document> {
+        const doc = await this.repository.findOneBy({id});
+
+        if(!doc) {
+            throw new NotFoundException("Document not found");
+        }
+
+        return doc;
     }
 }

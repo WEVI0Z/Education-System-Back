@@ -12,9 +12,12 @@ import { TokensModule } from "src/tokens/tokens.module";
   imports: [
     TypeOrmModule.forFeature([User]),
     SharedModule,
-    TokensModule
+    TokensModule,
   ],
   providers: [UsersService, UniqueEmailValidator, UniqueLoginValidator],
   controllers: [UsersController],
+  exports: [
+    UsersService
+  ]
 })
 export class UsersModule {}

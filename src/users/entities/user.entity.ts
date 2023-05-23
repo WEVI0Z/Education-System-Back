@@ -1,3 +1,4 @@
+import { Stat } from "src/stats/entities/stat.entity";
 import { Token } from "src/tokens/entities/token.entity";
 import { Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, TableUnique, Unique } from "typeorm";
 
@@ -38,4 +39,7 @@ export class User {
 
     @OneToMany(() => Token, token => token.user)
     token: Token[]
+
+    @OneToMany(() => Stat, stat => stat.user)
+    stat: Stat[]
 }
