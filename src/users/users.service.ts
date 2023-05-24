@@ -10,6 +10,7 @@ import { Token } from "src/tokens/entities/token.entity";
 import { GetTokenDto } from "src/tokens/dtos/get-token.dto";
 import { GetUserDto } from "./dtos/get-user.dto";
 import { GetSafeTokenDto } from "src/tokens/dtos/get-safe-token.dto";
+import { UpdateUserDto } from "./dtos/update-user.dto";
 
 @Injectable()
 export class UsersService {
@@ -81,5 +82,15 @@ export class UsersService {
         }
 
         return user;
+    }
+    
+    async update(updateUserDto: UpdateUserDto): Promise<User> {
+        const user: User = await this.repository.preload(updateUserDto);
+
+        if(!user) {
+            throw new NotFoundException("User not found");
+        }
+
+        return this.repository.save(user);
     }
 }

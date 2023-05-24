@@ -48,12 +48,12 @@ export class DocumentsService {
     }
     
     async update(updateDocumentDto): Promise<Document> {
-        const document = this.repository.preload(updateDocumentDto);
+        const document = await this.repository.preload(updateDocumentDto);
 
         if(!document) {
-            throw new NotFoundException();
+            throw new NotFoundException("Document not found");
         }
 
-        return document;
+        return this.repository.save(document);
     }
 }

@@ -8,6 +8,7 @@ import { Document } from "./entities/document.entity";
 import * as fs from 'fs';
 import { Response } from "express";
 import { UpdateDocumentDto } from "./dtos/update-document.dto";
+import { User } from "src/users/entities/user.entity";
 
 @Controller('documents')
 export class DocumentsController {
@@ -45,7 +46,7 @@ export class DocumentsController {
     }
 
     @Put("/")
-    update(@Body() updateDocumentDto: UpdateDocumentDto) {
+    update(@Body() updateDocumentDto: UpdateDocumentDto): Promise<Document> {
       return this.service.update(updateDocumentDto);
     }
 }
