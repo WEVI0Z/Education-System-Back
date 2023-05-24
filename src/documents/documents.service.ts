@@ -46,4 +46,14 @@ export class DocumentsService {
 
         return doc;
     }
+    
+    async update(updateDocumentDto): Promise<Document> {
+        const document = this.repository.preload(updateDocumentDto);
+
+        if(!document) {
+            throw new NotFoundException();
+        }
+
+        return document;
+    }
 }
