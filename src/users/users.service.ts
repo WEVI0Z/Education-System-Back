@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable, NotFoundException, forwardRef } from '@nestjs/common';
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./entities/user.entity";
 import { Repository } from "typeorm";
@@ -11,6 +11,7 @@ import { GetTokenDto } from "src/tokens/dtos/get-token.dto";
 import { GetUserDto } from "./dtos/get-user.dto";
 import { GetSafeTokenDto } from "src/tokens/dtos/get-safe-token.dto";
 import { UpdateUserDto } from "./dtos/update-user.dto";
+import { StatsService } from "src/stats/stats.service";
 
 @Injectable()
 export class UsersService {
@@ -18,6 +19,8 @@ export class UsersService {
         @InjectRepository(User)
         private readonly repository: Repository<User>,
         private tokensService: TokensService,
+        @Inject(forwardRef(() => StatsService))
+        private statsService: StatsService,
     ) {}
 
     async generateHashFromText(text): Promise<string> {
@@ -92,5 +95,18 @@ export class UsersService {
         }
 
         return this.repository.save(user);
+    }
+    
+    async delete(id: number) {
+        const user: User = await this.repository.findOneBy({id});
+        
+        await this.tokensService.deleteByUser(user);
+        await this.statsService.deleteByUser(user);
+
+        if(!user) {
+            throw new NotFoundException("User not found");
+        }
+
+        return this.repository.delete(user);
     }
 }

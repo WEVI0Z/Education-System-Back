@@ -12,7 +12,8 @@ import { DocumentsModule } from "../documents/documents.module";
   ],
   imports: [
     TypeOrmModule.forFeature([Stat]),
-    UsersModule,
+    forwardRef(() => UsersModule),
+    // UsersModule,
     DocumentsModule
   ],
   controllers: [StatsController],

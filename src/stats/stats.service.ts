@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException, forwardRef } from '@nestjs/common';
 import { CreateStatDto } from "./dtos/create-stat.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Stat } from "./entities/stat.entity";
@@ -13,6 +13,7 @@ export class StatsService {
     constructor(
         @InjectRepository(Stat)
         private repository: Repository<Stat>,
+        @Inject(forwardRef(() => UsersService))
         private usersService: UsersService,
         private documentsService: DocumentsService,
     ) {}
@@ -40,6 +41,14 @@ export class StatsService {
             order: {
                 id: "desc",
             }
+        })
+    }
+
+    async deleteByUser(user: User) {
+        const stats: Stat[] = await this.repository.findBy({user});
+
+        stats.forEach(stat => {
+            this.repository.delete(stat);
         })
     }
 }

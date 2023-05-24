@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from "src/users/entities/user.entity";
 import { Token } from "./entities/token.entity";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -55,5 +55,13 @@ export class TokensService {
         });
         
         return token;        
+    }
+    
+    async deleteByUser(user: User) {
+        const tokens: Token[] = await this.repository.findBy({user});
+
+        tokens.forEach(token => {
+            this.repository.delete(token);
+        })
     }
 }
