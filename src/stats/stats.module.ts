@@ -1,6 +1,6 @@
-import { Module, forwardRef } from '@nestjs/common';
-import { StatsService } from './stats.service';
-import { StatsController } from './stats.controller';
+import { Module, forwardRef } from "@nestjs/common";
+import { StatsService } from "./stats.service";
+import { StatsController } from "./stats.controller";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Stat } from "./entities/stat.entity";
 import { UsersModule } from "../users/users.module";
@@ -13,7 +13,6 @@ import { DocumentsModule } from "../documents/documents.module";
   imports: [
     TypeOrmModule.forFeature([Stat]),
     forwardRef(() => UsersModule),
-    // UsersModule,
     DocumentsModule
   ],
   controllers: [StatsController],

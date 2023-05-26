@@ -1,14 +1,14 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './users/users.module';
+import { Module } from "@nestjs/common";
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
+import { ConfigModule } from "@nestjs/config";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { UsersModule } from "./users/users.module";
 import { SnakeNamingStrategy } from "typeorm-naming-strategies";
-import { SharedModule } from './shared/shared.module';
-import { TokensModule } from './tokens/tokens.module';
-import { DocumentsModule } from './documents/documents.module';
-import { StatsModule } from './stats/stats.module';
+import { SharedModule } from "./shared/shared.module";
+import { TokensModule } from "./tokens/tokens.module";
+import { DocumentsModule } from "./documents/documents.module";
+import { StatsModule } from "./stats/stats.module";
 
 @Module({
   imports: [

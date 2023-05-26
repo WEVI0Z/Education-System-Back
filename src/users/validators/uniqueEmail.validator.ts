@@ -1,8 +1,8 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
-import { ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
+import { Injectable, UnprocessableEntityException } from "@nestjs/common";
+import { ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
 import { UsersService } from "../users.service";
 
-@ValidatorConstraint({ name: 'email', async: true })
+@ValidatorConstraint({ name: "email", async: true })
 @Injectable()
 export class UniqueEmailValidator implements ValidatorConstraintInterface {
   constructor(private readonly service: UsersService) {}
@@ -12,7 +12,7 @@ export class UniqueEmailValidator implements ValidatorConstraintInterface {
 
     users.forEach(user => {
         if(user.email === value) {
-            throw new UnprocessableEntityException('Email already exists')
+            throw new UnprocessableEntityException("Email already exists")
         }
     })
 

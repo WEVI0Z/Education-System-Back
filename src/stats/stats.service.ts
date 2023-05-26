@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException, forwardRef } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException, forwardRef } from "@nestjs/common";
 import { CreateStatDto } from "./dtos/create-stat.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Stat } from "./entities/stat.entity";

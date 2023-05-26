@@ -1,5 +1,5 @@
-import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from "@nestjs/common";
+import { Observable } from "rxjs";
 import { GetTokenDto } from "src/tokens/dtos/get-token.dto";
 import { TokensService } from "src/tokens/tokens.service";
 

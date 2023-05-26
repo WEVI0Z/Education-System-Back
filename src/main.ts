@@ -6,16 +6,22 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { SharedModule } from "./shared/shared.module";
 import { TokensModule } from "./tokens/tokens.module";
 import { UsersModule } from "./users/users.module";
+import { DocumentsModule } from "./documents/documents.module";
+import { StatsModule } from "./stats/stats.module";
 
 function connectSwagger(app) {
   const config = new DocumentBuilder()
     .setTitle("Education System Backend")
     .setDescription("Education System API description")
-    .setVersion("0.0.1")
+    .setVersion("1.0.0")
     .build();
 
   const document = SwaggerModule.createDocument(app, config, {
-   include: [SharedModule, TokensModule, UsersModule],
+   include: [
+    StatsModule,
+    UsersModule,
+    DocumentsModule
+  ],
   });
   
   SwaggerModule.setup("api", app, document);
